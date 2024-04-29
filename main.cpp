@@ -20,8 +20,8 @@ int main()
         {
             if (event.type == Event::Closed)
                 window.close();
-            
-            if(Mouse::Left){
+             if (event.type==Event::MouseButtonPressed){
+                if(event.mouseButton.button== Mouse::Left){
                 rect.setObjective(Mouse::getPosition().x,Mouse::getPosition().y);
             }
             /** (5pts)
