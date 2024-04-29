@@ -20,7 +20,10 @@ int main()
         {
             if (event.type == Event::Closed)
                 window.close();
-
+            
+            if(Mouse::Left){
+                rect.setObjective(Mouse::getPosition().x,Mouse::getPosition().y);
+            }
             /** (5pts)
                 Cuando se de click izquierdo, se deberá actualizar el objetivo del cuadrado a la posición del mouse.
             */

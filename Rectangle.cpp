@@ -5,29 +5,28 @@ using namespace std;
 
 Rectangle::Rectangle(Vector2f size)
 {
-    /**  (4pts)
-        Inicializa las variables: 
-        - shape: un rectángulo de tamaño size.
-        - speed: un Vector2f con valores (0, 0).
-        - objective: un Vector2f con valores (0, 0).
-        - Haz que el cuadrado se pinte de un color.
-    */
+    this->shape=RectangleShape(size);
+    this->speed=Vector2f(0.f,0.f);
+    this->objective=Vector2f(0.f,0.f);
+    this->shape.setFillColor(Color::Red);
 }
 
 Rectangle::Rectangle(Vector2f size, Vector2i position)
 {
-    /** (5pts)
-        Inicializa las variables:
-        - shape: un rectángulo de tamaño size.
-        - speed: un Vector2f con valores (0, 0).
-        - objective: un Vector2f de position.
-        - Haz que el cuadrado se pinte de un color.
-        - Haz que el cuadrado esté en la posición position.
-    */
+    this->shape=RectangleShape(size);
+    this->speed=Vector2f(0.f,0.f);
+    this->objective=Vector2f(0.f,0.f);
+    this->shape.setFillColor(Color::Red);
+    this->shape.setPosition(Vector2f(position));
 }
 
 void Rectangle::update()
 {
+   this->shape.move(speed);
+    if(shape.getPosition().x-Mouse::getPosition().x<=5 && shape.getPosition().y-Mouse::getPosition().y <=5){
+        shape.setPosition(shape.getPosition());
+        this->shape.setFillColor(Color::Green);
+    }
     /**(6pts)
         Mueve el cuadrado.
         Si el cuadrado está a menos de 5 pixeles del objetivo, detén el cuadrado y píntalo de verde.
@@ -37,19 +36,24 @@ void Rectangle::update()
 }
 
 void Rectangle::setObjective(Vector2f objective)
-{
-    /**(5pts)
-        Asigna objetivo a la propiedad objective.
-        Calcula la dirección hacia el objetivo y la velocidad necesaria para llegar al objetivo:
-        - Calcula la dirección hacia el objetivo.
-            - La dirección es la diferencia entre el objetivo y la posición del cuadrado.
-        - Calcula la magnitud de la dirección.
-            - la magnitud es la distancia entre el cuadrado y el objetivo.
-            - usa teorema de pitágoras para calcularla.
-        - Calcula la velocidad necesaria para llegar al objetivo.
-          - La velocidad es la dirección hacia el objetivo dividida por la magnitud de la dirección, multiplicada por un factor para cada eje.
-    */
-
+{   
+    this->objective.x=Mouse::getPosition().x;
+    this->objective.y=Mouse::getPosition().y;
+    float a,b,c;
+    a=objective.x;
+    b=objective.y;
+    a=a*a;
+    b=b*b;
+    c=sqrt(a+b);
+    
+    float direccionx=shape.getPosition().x;
+    float direcciony=shape.getPosition().y;
+    Vector2f direcciontot(direccionx-objective.x, direcciony-objective.y);
+    float magnitudx=shape.getPosition().x-c;
+    float magnitudy=shape.getPosition().y-c;
+    Vector2f magnitudtot(magnitudx-objective.x, magnitudy-objective.y);
+    Vector2f velocidad(direccionx-objective.x/magnitudx-objective.x,direcciony-objective.y/magnitudy-objective.y);
+    this->speed=magnitudtot;
     /**Reto de valientes (0.5 décimas extra)
         Haz que el centro del cuadrado se posicione donde se dio click en lugar de que la esquina superior izquierda se posicione donde se dio click.
     */
